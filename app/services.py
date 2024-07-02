@@ -45,9 +45,9 @@ def login_and_get_reading_data(userId: str, password: str):
             reading_data.append({
                 "year": year,
                 "month": month,
-                "book_count": f'{int(book_count):,}',
-                "chapter_count": f'{int(chapter_count):,}',
-                "word_count": f'{int(word_count):,}',
+                "book_count": int(book_count),
+                "chapter_count": int(chapter_count),
+                "word_count": int(word_count),
                 "daily_data": daily_data
             })
             sleep(3)
