@@ -34,14 +34,21 @@ def login_and_get_reading_data(userId: str, password: str):
             book_count = info[0].get_text().replace("\n","").replace(" ","").replace("\t","").replace(",","")
             chapter_count = info[1].get_text().replace("\n","").replace(" ","").replace("\t","").replace(",","")
             word_count = info[2].get_text().replace("\n","").replace(" ","").replace("\t","").replace(",","")
-            daily_table = soup.find('li', class_='id6')
-            print(daily_table)
+            daily_table = soup.find_all('table', class_='table1')[3].find_all('tr')[1:-1]
+            daily_data = dict()
+            for i in daily_table:
+                daily_data[int(i.find_all('td')[0].text[-2:])] = [
+                    {'daily_book_count': int(i.find_all('td')[1].text.replace(",",""))},
+                    {'daily_chapter_count': int(i.find_all('td')[2].text.replace(",",""))},
+                    {'daily_word_coount': int(i.find_all('td')[3].text.replace(",",""))}
+                ]
             reading_data.append({
                 "year": year,
                 "month": month,
                 "book_count": f'{int(book_count):,}',
                 "chapter_count": f'{int(chapter_count):,}',
-                "word_count": f'{int(word_count):,}'
+                "word_count": f'{int(word_count):,}',
+                "daily_data": daily_data
             })
             sleep(3)
     return reading_data
