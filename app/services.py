@@ -31,16 +31,16 @@ def login_and_get_reading_data(userId: str, password: str):
             soup = BeautifulSoup(response.text, "html.parser")
             table = soup.find('table', class_="table1")
             info = table.find_all("td")
-            book_count = info[0].get_text().replace("\n","").replace(" ","").replace("\t","").replace(",","")
-            chapter_count = info[1].get_text().replace("\n","").replace(" ","").replace("\t","").replace(",","")
-            word_count = info[2].get_text().replace("\n","").replace(" ","").replace("\t","").replace(",","")
+            book_count = info[0].get_text().replace("\n","").replace(" ","").replace("\t","").replace(",","").replace("-","0")
+            chapter_count = info[1].get_text().replace("\n","").replace(" ","").replace("\t","").replace(",","").replace("-","0")
+            word_count = info[2].get_text().replace("\n","").replace(" ","").replace("\t","").replace(",","").replace("-","0")
             daily_table = soup.find_all('table', class_='table1')[3].find_all('tr')[1:-1]
             daily_data = dict()
             for i in daily_table:
                 daily_data[int(i.find_all('td')[0].text[-2:])] = [
-                    {'daily_book_count': int(i.find_all('td')[1].text.replace(",",""))},
-                    {'daily_chapter_count': int(i.find_all('td')[2].text.replace(",",""))},
-                    {'daily_word_coount': int(i.find_all('td')[3].text.replace(",",""))}
+                    {'daily_book_count': int(i.find_all('td')[1].text.replace("-","0").replace(",",""))},
+                    {'daily_chapter_count': int(i.find_all('td')[2].text.replace("-","0").replace(",",""))},
+                    {'daily_word_coount': int(i.find_all('td')[3].text.replace("-","0").replace(",",""))}
                 ]
             reading_data.append({
                 "year": year,
