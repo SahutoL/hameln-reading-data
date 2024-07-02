@@ -35,7 +35,7 @@ def login_and_get_reading_data(userId: str, password: str):
             chapter_count = info[1].get_text().replace("\n","").replace(" ","").replace("\t","").replace(",","")
             word_count = info[2].get_text().replace("\n","").replace(" ","").replace("\t","").replace(",","")
             daily_table = soup.find('li', class_='id6')
-            print(daily_tabel)
+            print(daily_table)
             reading_data.append({
                 "year": year,
                 "month": month,
