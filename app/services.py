@@ -19,7 +19,7 @@ def login_and_get_reading_data(userId: str, password: str):
         "redirect_mode": ""
     }
     response = session.post(login_url,headers=headers, data=login_data)
-    sleep(1)
+    sleep(3)
     if response.status_code != 200:
         raise Exception("Login failed")
 
@@ -41,4 +41,5 @@ def login_and_get_reading_data(userId: str, password: str):
                 "chapter_count": f'{int(chapter_count):,}',
                 "word_count": f'{int(word_count):,}'
             })
+            sleep(3)
     return reading_data
