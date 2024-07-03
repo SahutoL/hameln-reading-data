@@ -85,7 +85,7 @@ async def scrape_hameln(credentials: HTTPBasicCredentials = Depends(security)):
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=401, detail=f"Login failed: {str(e)}")
 
-    time.sleep(random.uniform(2, 4))
+    time.sleep(3)
 
     reading_data = []
     current_year = datetime.datetime.now().year
@@ -133,6 +133,6 @@ async def scrape_hameln(credentials: HTTPBasicCredentials = Depends(security)):
                 daily_data=daily_data
             ))
 
-            time.sleep(random.uniform(2, 4))  # ランダムな待機時間
+            time.sleep(3)
 
     return ScraperResponse(data=reading_data)
