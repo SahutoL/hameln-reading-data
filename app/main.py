@@ -134,6 +134,5 @@ async def scrape_hameln(credentials: HTTPBasicCredentials = Depends(security)):
             ))
 
             time.sleep(3)
-    return reading_data
 
     return ScraperResponse(data=reading_data)
