@@ -12,12 +12,9 @@ import os
 
 load_dotenv()
 
-db_user_name = os.environ.get("DB_USER_NAME")
-db_password = os.environ.get("DB_PASSWORD")
-db_host = os.environ.get("DB_HOST")
-db_name = os.environ.get("DB_NAME")
+db_url = os.environ.get("DB_URL")
 
-SQLALCHEMY_DATABASE_URL = f'postgresql://{db_user_name}:{db_password}@{db_host}/{db_name}'
+SQLALCHEMY_DATABASE_URL = f'{db_url}'
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
