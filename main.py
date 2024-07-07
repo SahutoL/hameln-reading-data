@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException, Security
 from fastapi.security import APIKeyHeader
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from sqlalchemy import create_engine, Column, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
@@ -37,6 +38,10 @@ app = FastAPI(
     title="Client Management and Reading Data API",
     description="This API provides endpoints for client registration and retrieving reading data.",
     version="1.0.0"
+)
+
+app.add_middleware(
+    TrustedHostMiddleware, allowed_hosts=["hameln-reading-data.onrender.com"]
 )
 
 def get_db():
