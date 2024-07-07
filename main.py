@@ -36,7 +36,11 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Client Management and Reading Data API",
-    description="This API provides endpoints for client registration and retrieving reading data.",
+    description="""
+    This API provides endpoints for client registration and retrieving reading data.
+    First, POST your Hameln ID and PASSWORD to /register_client.
+    Then, Authorize it in the format 'userId:password' and execute /get_reading_data, which will return your Hameln reading data in JSON format.
+    """,
     version="1.0.0"
 )
 
