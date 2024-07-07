@@ -1,5 +1,0 @@
-__pycache__/
-venv/
-.env
-fly.toml
-Procfile
