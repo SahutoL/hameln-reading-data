@@ -22,7 +22,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 class Client(Base):
-    __tablename__ = "sqdb"
+    __tablename__ = "clients"
 
     user_id = Column(String, primary_key=True, index=True)
     hashed_password = Column(String)
