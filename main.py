@@ -12,7 +12,7 @@ import os
 
 load_dotenv()
 
-db_url = os.environ.get("DB_URL")
+db_url = os.environ.get("DATABASE_URL")
 
 SQLALCHEMY_DATABASE_URL = f'{db_url}'
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
