@@ -7,7 +7,7 @@ import time
 import datetime
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
-import random
+import random, cloudscraper
 from typing import List, Dict
 
 app = FastAPI()
@@ -68,7 +68,7 @@ async def scrape_hameln(credentials: HTTPBasicCredentials = Depends(security)):
     }
 
     login_url = "https://syosetu.org/"
-    session = get_session()
+    scraper = cloudscraper.create_scraper()
 
     login_data = {
         "id": userId,
@@ -80,7 +80,7 @@ async def scrape_hameln(credentials: HTTPBasicCredentials = Depends(security)):
     }
 
     try:
-        response = session.post(login_url, headers=headers, data=login_data, verify=True)
+        response = scraper.post(login_url, headers=headers, data=login_data, verify=True)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=401, detail=f"Login failed: {str(e)}")
@@ -99,7 +99,7 @@ async def scrape_hameln(credentials: HTTPBasicCredentials = Depends(security)):
             history_url = f"https://syosetu.org/?mode=view_reading_history&type=&date={year}-{month}"
             
             try:
-                response = session.get(history_url, headers=headers, verify=True)
+                response = scraper.get(history_url, headers=headers, verify=True)
                 response.raise_for_status()
             except requests.exceptions.RequestException as e:
                 print(f"Failed to fetch data for {year}-{month}: {str(e)}")
