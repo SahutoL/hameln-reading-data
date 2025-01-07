@@ -30,12 +30,24 @@ def get_session():
     return session
 
 def get_random_user_agent():
-    user_agents = [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15",
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36"
+    windows_versions = ["10.0"]
+    chrome_versions = f"{random.randint(119,129)}.0.0.0"
+    user_agent = (
+        f"Mozilla/5.0 (Windows NT {random.choice(windows_versions)}; Win64; x64) "
+        f"AppleWebKit/537.36 (KHTML, like Gecko) "
+        f"Chrome/{chrome_versions} Safari/537.36"
+    )
+    return user_agent
+
+def get_random_referer():
+    referers = [
+        "https://www.google.com/search?q=%E3%83%8F%E3%83%BC%E3%83%A1%E3%83%AB%E3%83%B3&ie=UTF-8&oe=UTF-8&hl=ja-jp&client=safari",
+        "https://syosetu.org/",
+        "https://syosetu.org/search/?mode=search",
+        "https://syosetu.org/?mode=rank",
+        "https://syosetu.org/?mode=favo"
     ]
-    return random.choice(user_agents)
+    return random.choice(referers)
 
 def get_random_delay():
     return random.uniform(2, 7)
@@ -67,6 +79,11 @@ async def scrape_hameln():#credentials: HTTPBasicCredentials = Depends(security)
     headers = {
         "User-Agent": get_random_user_agent(),
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+        "Accept-Language": "ja-JP,ja;q=0.9",
+        "Referer": get_random_referer(),
+        "DNT": "1",
+        "Upgrade-Insecure-Requests": "1",
+        "Connection": "keep-alive"
     }
 
     login_url = "https://syosetu.org/?mode=login_entry"
