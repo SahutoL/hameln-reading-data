@@ -1,13 +1,10 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
-import requests
 from bs4 import BeautifulSoup
-import time
-import datetime
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
-import random, cloudscraper
+import random, cloudscraper, time, datetime, requests
 from typing import List, Dict
 
 app = FastAPI()
@@ -39,6 +36,9 @@ def get_random_user_agent():
         "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36"
     ]
     return random.choice(user_agents)
+
+def get_random_delay():
+    return random.uniform(2, 7)
 
 def parse_count(text: str) -> int:
     return int(text.replace("\n", "").replace(" ", "").replace("\t", "").replace(",", "").replace("-", "0"))
@@ -85,7 +85,7 @@ async def scrape_hameln(credentials: HTTPBasicCredentials = Depends(security)):
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=401, detail=f"Login failed: {str(e)}")
 
-    time.sleep(3)
+    time.sleep(get_random_delay())
 
     reading_data = []
     current_year = datetime.datetime.now().year
@@ -133,6 +133,7 @@ async def scrape_hameln(credentials: HTTPBasicCredentials = Depends(security)):
                 daily_data=daily_data
             ))
 
-            time.sleep(3)
+            time.sleep(get_random_delay())
+        time.sleep(get_random_delay())
 
     return ScraperResponse(data=reading_data)
