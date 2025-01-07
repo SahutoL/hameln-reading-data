@@ -58,7 +58,7 @@ def parse_daily_data(daily_table) -> Dict[int, Dict[str, int]]:
     return daily_data
 
 @app.post("/reading_data", response_model=ScraperResponse)
-async def scrape_hameln(credentials: HTTPBasicCredentials = Depends(security)):
+async def scrape_hameln():#credentials: HTTPBasicCredentials = Depends(security)):
     # userId = credentials.username
     # password = credentials.password
     userId = os.environ.get("USER_NAME")
@@ -69,7 +69,7 @@ async def scrape_hameln(credentials: HTTPBasicCredentials = Depends(security)):
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
     }
 
-    login_url = "https://syosetu.org/"
+    login_url = "https://syosetu.org/?mode=login_entry"
     scraper = cloudscraper.create_scraper()
 
     login_data = {
@@ -82,7 +82,7 @@ async def scrape_hameln(credentials: HTTPBasicCredentials = Depends(security)):
     }
 
     try:
-        response = scraper.post(login_url, headers=headers, data=login_data, verify=True)
+        response = scraper.post(login_url, headers=headers, data=login_data)#, verify=True)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=401, detail=f"Login failed: {str(e)}")
