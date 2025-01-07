@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
-import random, cloudscraper, time, datetime, requests
+import random, cloudscraper, time, datetime, requests, os
 from typing import List, Dict
 
 app = FastAPI()
@@ -23,7 +23,7 @@ class ScraperResponse(BaseModel):
 
 def get_session():
     session = requests.Session()
-    retry = Retry(total=3, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
+    retry = Retry(total=1, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
     adapter = HTTPAdapter(max_retries=retry)
     session.mount('http://', adapter)
     session.mount('https://', adapter)
@@ -59,8 +59,10 @@ def parse_daily_data(daily_table) -> Dict[int, Dict[str, int]]:
 
 @app.post("/reading_data", response_model=ScraperResponse)
 async def scrape_hameln(credentials: HTTPBasicCredentials = Depends(security)):
-    userId = credentials.username
-    password = credentials.password
+    # userId = credentials.username
+    # password = credentials.password
+    userId = os.environ.get("USER_NAME")
+    password = os.environ.get("PASSWORD")
 
     headers = {
         "User-Agent": get_random_user_agent(),
